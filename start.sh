@@ -1,4 +1,5 @@
 #!/bin/bash
 
-python parse1.py &
-python parse2.py 
+mkdir -p wikilinks_cleaned
+python clean1.py &
+python clean2.py 

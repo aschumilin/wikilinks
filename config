@@ -1,1 +1,2 @@
-{"data-dir": "./wikilinks_dataset/"}
+{"data-dir": "./wikilinks_dataset/", 
+"clean-dir": "./wikilinks_cleaned/"}
