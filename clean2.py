@@ -60,10 +60,10 @@ def traverseFiles(dataFileNames, threadNr):
 
 # 1. read the data into memory
 ############################################################
-#argLeft = dataFiles[0:5]
-argRight = dataFiles[5:10]
+#data = dataFiles[0:5]
+data = dataFiles[5:10]
 #argLeft = dataFiles
-traverseFiles(argRight, threadNr)
+traverseFiles(data, threadNr)
 
 
 # 2. clean and save the data
