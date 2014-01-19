@@ -23,21 +23,69 @@ def traverseFiles(dataFileNames, threadNr):
     t = Timer()
     t.click()
     for fileName in dataFileNames:
-        print "\n thread ", threadNr, " doing ", fileName
+        print "\nthread ", threadNr, " doing ", fileName
         dataFile = open(config.get("data-dir") + fileName)
         for line in dataFile:
+            #data.append(line.strip().split("\t"))
             data.append(line)
+            
+        data.append("+ new file")
     t.click()
     print "thread ", threadNr, " done in ", t.show()
 
 
+
+# 1. read the data into memory
+############################################################
+argLeft = dataFiles[0:5]
+#argRight = dataFiles[5:10]
+argLeft = dataFiles
+traverseFiles(argLeft, threadNr)
+
+
+# 2. clean and save the data
+############################################################
+print " starting cleaner ", threadNr
 T.click()
 
+fileNumber = 0
+resultFile = open(config.get("clean-dir") + "wikilinks-cleaned-" + str(fileNumber), "w")
 
+for line in data:
+    firstChar = line[0]
+    
+    # line is URL
+    if firstChar == "U":
+        resultFile.write(line)
+        #print line[3].split("http://en.wikipedia.org/wiki/")[1]
+        
+    # line is a MENTION
+    elif firstChar =="M":
+        resultFile.write(line)
+        
+    # line is a TOKEN, exclude them.
+    elif firstChar == "T":
+        continue
+    
+    # line is file separator. switch files here
+    elif firstChar == "+":
+        resultFile.close()
+        fileNumber += 1
+        resultFile = open(config.get("clean-dir") + "wikilinks-cleaned-" + str(fileNumber), "w")
+        print "+",
+        
+    # line is a separator between two documents
+    elif firstChar == "\n":
+        resultFile.write(line)
+    else: 
+        print "ERROR: strange line: ", line
 
-traverseFiles(dataFiles[0:5],threadNr)
+        
+resultFile.close()      
 T.click()
-print "thread 1 - reading done in ", T.show()     
+   
+
+print "cleaner ", threadNr, " done in ", T.show()
 
 
 

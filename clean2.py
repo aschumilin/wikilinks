@@ -38,13 +38,14 @@ def traverseFiles(dataFileNames, threadNr):
 # 1. read the data into memory
 ############################################################
 #argLeft = dataFiles[0:5]
-#argRight = dataFiles[5:10]
-argLeft = dataFiles
-traverseFiles(argLeft, threadNr)
+argRight = dataFiles[5:10]
+#argLeft = dataFiles
+traverseFiles(argRight, threadNr)
 
 
 # 2. clean and save the data
 ############################################################
+print " starting cleaner ", threadNr
 T.click()
 
 fileNumber = 0
@@ -71,7 +72,7 @@ for line in data:
         resultFile.close()
         fileNumber += 1
         resultFile = open(config.get("clean-dir") + "wikilinks-cleaned-" + str(fileNumber), "w")
-
+        print "+",
         
     # line is a separator between two documents
     elif firstChar == "\n":
@@ -84,7 +85,7 @@ resultFile.close()
 T.click()
    
 
-print T.show()
+print "cleaner ", threadNr, " done in ", T.show()
 
 """
 docDict = dict()
