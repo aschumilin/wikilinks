@@ -15,21 +15,44 @@ config = json.load(open("config")) # dictionary of settings
 dataFiles = os.listdir(config.get("data-dir"))
 
 T = Timer()
-data = []
 threadNr = 2
 
 def traverseFiles(dataFileNames, threadNr):
     print "starting ", threadNr 
     t = Timer()
     t.click()
+    
+    
     for fileName in dataFileNames:
-        print "\nthread ", threadNr, " doing ", fileName
+        print "\nthread ", threadNr, " cleaning ", fileName
         dataFile = open(config.get("data-dir") + fileName)
+        resultFile = open(config.get("clean-dir") + "clean_" + fileName, "w")
+        
         for line in dataFile:
-            #data.append(line.strip().split("\t"))
-            data.append(line)
+            firstChar = line[0]
             
-        data.append("+ new file")
+            # line is URL
+            if firstChar == "U":
+                resultFile.write(line)
+                #print line[3].split("http://en.wikipedia.org/wiki/")[1]
+                
+            # line is a MENTION
+            elif firstChar =="M":
+                resultFile.write(line)
+                
+            # line is a TOKEN, exclude them.
+            elif firstChar == "T":
+                continue
+                
+            # line is a separator between two documents
+            elif firstChar == "\n":
+                resultFile.write(line)
+            else: 
+                print "ERROR: strange line: ", line
+    
+            
+        resultFile.close()  
+            
     t.click()
     print "thread ", threadNr, " done in ", t.show()
 
@@ -45,47 +68,14 @@ traverseFiles(argRight, threadNr)
 
 # 2. clean and save the data
 ############################################################
-print " starting cleaner ", threadNr
+#print " starting cleaner ", threadNr
 T.click()
 
-fileNumber = 0
-resultFile = open(config.get("clean-dir") + "wikilinks-cleaned-" + str(fileNumber), "w")
 
-for line in data:
-    firstChar = line[0]
-    
-    # line is URL
-    if firstChar == "U":
-        resultFile.write(line)
-        #print line[3].split("http://en.wikipedia.org/wiki/")[1]
-        
-    # line is a MENTION
-    elif firstChar =="M":
-        resultFile.write(line)
-        
-    # line is a TOKEN, exclude them.
-    elif firstChar == "T":
-        continue
-    
-    # line is file separator. switch files here
-    elif firstChar == "+":
-        resultFile.close()
-        fileNumber += 1
-        resultFile = open(config.get("clean-dir") + "wikilinks-cleaned-" + str(fileNumber), "w")
-        print "+",
-        
-    # line is a separator between two documents
-    elif firstChar == "\n":
-        resultFile.write(line)
-    else: 
-        print "ERROR: strange line: ", line
-
-        
-resultFile.close()      
 T.click()
    
 
-print "cleaner ", threadNr, " done in ", T.show()
+#print "cleaner ", threadNr, " done in ", T.show()
 
 """
 docDict = dict()
@@ -95,16 +85,6 @@ phraseDict = dict()
 docCount = 0
 entCount = 0
 phraseCount = 0
-
-
-T.click()
-
-for line in data:
-    if line[0] == "MENTION":print line[3].split("http://en.wikipedia.org/wiki/")[1]
-T.click()
-   
-
-print T.show()
 
 
 """
