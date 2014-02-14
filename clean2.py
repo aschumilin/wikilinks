@@ -65,28 +65,3 @@ data = dataFiles[5:10]
 #argLeft = dataFiles
 traverseFiles(data, threadNr)
 
-
-# 2. clean and save the data
-############################################################
-#print " starting cleaner ", threadNr
-T.click()
-
-
-T.click()
-   
-
-#print "cleaner ", threadNr, " done in ", T.show()
-
-"""
-docDict = dict()
-entDict = dict()
-phraseDict = dict()
-
-docCount = 0
-entCount = 0
-phraseCount = 0
-
-
-"""
-
-# 1. reading  182.185.310  lines in  99.3188459873s
